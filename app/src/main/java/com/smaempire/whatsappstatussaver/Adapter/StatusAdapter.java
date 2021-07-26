@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -64,7 +65,6 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.Holder>{
                 final String path = ((StatusModel) list.get(position)).getPath();
                 final File file = new File(path);
                 String destPath = Environment.getExternalStorageDirectory().getAbsolutePath() + Constants.SAVE_FOLDER_NAME;
-                Toast.makeText(context, destPath, Toast.LENGTH_SHORT).show();
                 File destFile = new File(destPath);
 
                 try {
@@ -93,6 +93,12 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.Holder>{
 
             }
         });
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
     }
 
@@ -114,12 +120,14 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.Holder>{
 
     public class Holder extends RecyclerView.ViewHolder{
         ImageView mainImg,playBtn,downloadImg,shareImg;
+        CardView cardView;
         public Holder(@NonNull View itemView) {
             super(itemView);
             mainImg = itemView.findViewById(R.id.mainImageView);
             downloadImg = itemView.findViewById(R.id.downloadBtn);
             shareImg = itemView.findViewById(R.id.shareBtn);
             playBtn = itemView.findViewById(R.id.playButtonImg);
+            cardView = itemView.findViewById(R.id.cardView);
 
 
         }

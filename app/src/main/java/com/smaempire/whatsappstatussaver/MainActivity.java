@@ -33,11 +33,11 @@ public class MainActivity extends AppCompatActivity {
                     switch (item.getItemId()){
                         case R.id.nav_status:
                             selectedFragment = new FragmentStatus();
-                            Toast.makeText(MainActivity.this, "Set Status", Toast.LENGTH_SHORT).show();
+
                             break;
                         case R.id.nav_downloads:
                             selectedFragment=new FragmentDownloads();
-                            Toast.makeText(MainActivity.this, "Set Downloads", Toast.LENGTH_SHORT).show();
+
                             break;
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,

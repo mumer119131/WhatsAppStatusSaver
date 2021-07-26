@@ -7,10 +7,11 @@
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardUseCompatPadding="true"
-        app:cardElevation="5dp">
+        app:cardElevation="5dp"
+        app:cardUseCompatPadding="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -22,12 +23,12 @@
                 app:cardCornerRadius="50dp">
 
                 <ImageView
+                    android:id="@+id/mainImageView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
-                    android:id="@+id/mainImageView"
                     android:background="@drawable/round_outline"
+                    android:scaleType="fitCenter"
 
                     />
 
@@ -35,12 +36,11 @@
 
 
             <ImageView
+                android:id="@+id/playButtonImg"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:id="@+id/playButtonImg"
-                android:src="@drawable/ic_baseline_play_arrow_24"
                 android:padding="20dp"
-                />
+                android:src="@drawable/ic_baseline_play_arrow_24" />
 
             <ImageView
                 android:id="@+id/downloadBtn"
