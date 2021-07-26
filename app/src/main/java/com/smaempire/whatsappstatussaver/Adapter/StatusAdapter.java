@@ -1,6 +1,7 @@
 package com.smaempire.whatsappstatussaver.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.smaempire.whatsappstatussaver.Constants.Constants;
 import com.smaempire.whatsappstatussaver.R;
+import com.smaempire.whatsappstatussaver.ShowStatus;
 import com.smaempire.whatsappstatussaver.StatusModel;
 
 import org.apache.commons.io.FileUtils;
@@ -96,7 +98,34 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.Holder>{
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(files.getUri().toString().endsWith(".mp4")){
+                    Intent intent = new Intent(context, ShowStatus.class);
+                    intent.putExtra("TYPE","mp4");
+                    intent.putExtra("PATH",files.getPath());
+                    context.startActivity(intent);
 
+                }else {
+                    holder.playBtn.setVisibility(View.INVISIBLE);
+                    Intent intent = new Intent(context, ShowStatus.class);
+                    intent.putExtra("PATH", files.getPath());
+                    intent.putExtra("TYPE","jpg");
+                    context.startActivity(intent);
+                }
+
+            }
+        });
+        holder.shareImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("video/mp4");
+                i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                i.putExtra(Intent.EXTRA_STREAM,files.getUri());
+                try {
+                    context.startActivity(Intent.createChooser(i,"Send Video via :"));
+                }catch (android.content.ActivityNotFoundException e){
+                    Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

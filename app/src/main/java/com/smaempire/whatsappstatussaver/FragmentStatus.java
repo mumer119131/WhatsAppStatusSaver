@@ -86,10 +86,8 @@ public class FragmentStatus extends Fragment {
         String targetPath = Environment.getExternalStorageDirectory().getAbsolutePath() + Constants.FOLDER_NAME + "Media/.Statuses";
         File targetDirector = new File(targetPath);
 
-        Toast.makeText(getActivity(),targetDirector.getAbsoluteFile().toString(), Toast.LENGTH_SHORT).show();
         File[] files = targetDirector.listFiles();
 
-        Toast.makeText(getActivity(), "File existance is "+targetDirector.exists(), Toast.LENGTH_SHORT).show();
 
         try {
             if(files != null){
