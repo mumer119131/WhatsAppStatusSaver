@@ -22,6 +22,11 @@ public class ShowStatus extends AppCompatActivity {
     ImageView backButton;
 
     @Override
+    public void onBackPressed() {
+        finish();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_status);
@@ -29,6 +34,7 @@ public class ShowStatus extends AppCompatActivity {
         videoView = findViewById(R.id.statusVideoView);
         MediaController mediaController = new MediaController(this);
         videoView.setMediaController(mediaController);
+        backButton = findViewById(R.id.backBtn);
 
         Bundle extras = getIntent().getExtras();
         Intent i = getIntent();
@@ -50,6 +56,14 @@ public class ShowStatus extends AppCompatActivity {
             Bitmap bitmap = BitmapFactory.decodeFile(path);
             statusImg.setImageBitmap(bitmap);
         }
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
 
     }
 }

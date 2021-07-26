@@ -4,6 +4,7 @@ import android.Manifest;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,8 +43,10 @@ public class FragmentStatus extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_status, container, false);
-        refreshBtn = root.findViewById(R.id.refreshBtn);
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
         recyclerView = root.findViewById(R.id.rvStatus);
+        refreshBtn = root.findViewById(R.id.refreshBtn);
 
         refreshBtn.setOnClickListener(new View.OnClickListener() {
             @Override

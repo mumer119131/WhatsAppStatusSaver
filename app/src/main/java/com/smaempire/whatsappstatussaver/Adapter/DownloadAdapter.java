@@ -26,29 +26,26 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.List;
 
-public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.Holder>{
-
+public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.Holder>{
     Context context;
     ArrayList<Object> list;
 
-    public StatusAdapter(Context context, ArrayList<Object> list) {
+    public DownloadAdapter(Context context, ArrayList<Object> list) {
         this.context = context;
         this.list = list;
     }
 
     @NonNull
     @Override
-    public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public DownloadAdapter.Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.status_card_row,null,false);
-        return new Holder(view);
+        return new DownloadAdapter.Holder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Holder holder, int position) {
+    public void onBindViewHolder(@NonNull DownloadAdapter.Holder holder, int position) {
         final StatusModel files = (StatusModel) list.get(position);
         String fileName = files.getFilename();
         if(fileName.length()>10){
@@ -56,7 +53,7 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.Holder>{
             fileName = fileName.substring(0,10)+"..."+extension;
         }
         holder.fileNameTV.setText(fileName);
-
+        holder.downloadImg.setVisibility(View.GONE);
 
         if(files.getUri().toString().endsWith(".mp4")){
             holder.playBtn.setVisibility(View.VISIBLE);
@@ -68,42 +65,6 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.Holder>{
                 .load(files.getUri())
                 .into(holder.mainImg);
 
-        holder.downloadImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkFolderExist();
-
-                final String path = ((StatusModel) list.get(position)).getPath();
-                final File file = new File(path);
-                String destPath = Environment.getExternalStorageDirectory().getAbsolutePath() + Constants.SAVE_FOLDER_NAME;
-                File destFile = new File(destPath);
-
-                try {
-                    FileUtils.copyFileToDirectory(file,destFile);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                MediaScannerConnection.scanFile(
-                        context,
-                        new String[]{destPath + files.getName()},
-                        new String[]{"*/*"},
-                        new MediaScannerConnection.MediaScannerConnectionClient() {
-                            @Override
-                            public void onMediaScannerConnected() {
-
-                            }
-
-                            @Override
-                            public void onScanCompleted(String path, Uri uri) {
-
-                            }
-                        }
-                );
-                Toast.makeText(context, "Saved to : "+destPath+files.getFilename(), Toast.LENGTH_SHORT).show();
-
-            }
-        });
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,18 +111,6 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.Holder>{
         });
 
     }
-
-    private void checkFolderExist() {
-         String path = Environment.getExternalStorageDirectory().getAbsolutePath() + Constants.SAVE_FOLDER_NAME;
-         File dir = new File(path);
-
-         boolean isDirectoryExist = dir.exists();
-
-         if(!isDirectoryExist){
-             isDirectoryExist = dir.mkdir();
-         }
-    }
-
     @Override
     public int getItemCount() {
         return list.size();
@@ -183,5 +132,4 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.Holder>{
 
         }
     }
-
 }
