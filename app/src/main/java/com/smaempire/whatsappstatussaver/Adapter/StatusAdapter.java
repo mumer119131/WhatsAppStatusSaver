@@ -30,7 +30,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.Holder>{
+public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.Holder> {
 
     Context context;
     ArrayList<Object> list;
@@ -43,7 +43,7 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.Holder>{
     @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.status_card_row,null,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.status_card_row, null, false);
         return new Holder(view);
     }
 
@@ -51,16 +51,20 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.Holder>{
     public void onBindViewHolder(@NonNull Holder holder, int position) {
         final StatusModel files = (StatusModel) list.get(position);
         String fileName = files.getFilename();
-        if(fileName.length()>10){
-            String extension = fileName.substring(fileName.length()-4,fileName.length());
-            fileName = fileName.substring(0,10)+"..."+extension;
+        if (fileName.length() > 10) {
+            String extension = fileName.substring(fileName.length() - 4);
+            fileName = fileName.substring(0, 10) + "..." + extension;
+        }
+        File fileExist = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + Constants.SAVE_FOLDER_NAME + files.getFilename());
+        if (fileExist.exists()) {
+            holder.downloadImg.setVisibility(View.INVISIBLE);
         }
         holder.fileNameTV.setText(fileName);
 
 
-        if(files.getUri().toString().endsWith(".mp4")){
+        if (files.getUri().toString().endsWith(".mp4")) {
             holder.playBtn.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             holder.playBtn.setVisibility(View.INVISIBLE);
         }
 
@@ -79,7 +83,7 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.Holder>{
                 File destFile = new File(destPath);
 
                 try {
-                    FileUtils.copyFileToDirectory(file,destFile);
+                    FileUtils.copyFileToDirectory(file, destFile);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -100,24 +104,25 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.Holder>{
                             }
                         }
                 );
-                Toast.makeText(context, "Saved to : "+destPath+files.getFilename(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Saved to : " + destPath + files.getFilename(), Toast.LENGTH_SHORT).show();
+                holder.downloadImg.setVisibility(View.INVISIBLE);
 
             }
         });
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(files.getUri().toString().endsWith(".mp4")){
+                if (files.getUri().toString().endsWith(".mp4")) {
                     Intent intent = new Intent(context, ShowStatus.class);
-                    intent.putExtra("TYPE","mp4");
-                    intent.putExtra("PATH",files.getPath());
+                    intent.putExtra("TYPE", "mp4");
+                    intent.putExtra("PATH", files.getPath());
                     context.startActivity(intent);
 
-                }else {
+                } else {
                     holder.playBtn.setVisibility(View.INVISIBLE);
                     Intent intent = new Intent(context, ShowStatus.class);
                     intent.putExtra("PATH", files.getPath());
-                    intent.putExtra("TYPE","jpg");
+                    intent.putExtra("TYPE", "jpg");
                     context.startActivity(intent);
                 }
 
@@ -128,20 +133,20 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.Holder>{
             public void onClick(View v) {
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                i.putExtra(Intent.EXTRA_STREAM,files.getUri());
+                i.putExtra(Intent.EXTRA_STREAM, files.getUri());
 
-                if(files.getUri().toString().endsWith(".mp4")){
+                if (files.getUri().toString().endsWith(".mp4")) {
                     i.setType("video/mp4");
                     try {
-                        context.startActivity(Intent.createChooser(i,"Send Video via :"));
-                    }catch (android.content.ActivityNotFoundException e){
+                        context.startActivity(Intent.createChooser(i, "Send Video via :"));
+                    } catch (android.content.ActivityNotFoundException e) {
                         Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
                     }
-                }else {
+                } else {
                     i.setType("image/jpg");
                     try {
-                        context.startActivity(Intent.createChooser(i,"Send Video via :"));
-                    }catch (android.content.ActivityNotFoundException e){
+                        context.startActivity(Intent.createChooser(i, "Send Video via :"));
+                    } catch (android.content.ActivityNotFoundException e) {
                         Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
                     }
 
@@ -152,14 +157,14 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.Holder>{
     }
 
     private void checkFolderExist() {
-         String path = Environment.getExternalStorageDirectory().getAbsolutePath() + Constants.SAVE_FOLDER_NAME;
-         File dir = new File(path);
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + Constants.SAVE_FOLDER_NAME;
+        File dir = new File(path);
 
-         boolean isDirectoryExist = dir.exists();
+        boolean isDirectoryExist = dir.exists();
 
-         if(!isDirectoryExist){
-             isDirectoryExist = dir.mkdir();
-         }
+        if (!isDirectoryExist) {
+            isDirectoryExist = dir.mkdir();
+        }
     }
 
     @Override
@@ -167,10 +172,11 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.Holder>{
         return list.size();
     }
 
-    public class Holder extends RecyclerView.ViewHolder{
-        ImageView mainImg,playBtn,downloadImg,shareImg;
+    public class Holder extends RecyclerView.ViewHolder {
+        ImageView mainImg, playBtn, downloadImg, shareImg;
         TextView fileNameTV;
         CardView cardView;
+
         public Holder(@NonNull View itemView) {
             super(itemView);
             mainImg = itemView.findViewById(R.id.mainImageView);

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    >
+
+    <item
+        android:title="Download"
+        android:id="@+id/downloadStatus"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_baseline_arrow_downward_24"
+        android:iconTint="@color/white"
+        >
+
+    </item>
+
+    <item
+        android:title="Share"
+        android:id="@+id/shareStatus"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_baseline_share_24"
+        android:iconTint="@color/white"
+        >
+
+    </item>
+
+</menu>

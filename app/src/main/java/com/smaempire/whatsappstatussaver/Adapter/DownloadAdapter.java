@@ -1,6 +1,7 @@
 package com.smaempire.whatsappstatussaver.Adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -13,10 +14,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.smaempire.whatsappstatussaver.Constants.Constants;
 import com.smaempire.whatsappstatussaver.R;
 import com.smaempire.whatsappstatussaver.ShowStatus;
@@ -82,6 +85,32 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.Holder
                     context.startActivity(intent);
                 }
 
+            }
+        });
+        holder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
+                builder.setMessage("Are you sure to Delete the File");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+Constants.SAVE_FOLDER_NAME+files.getFilename());
+                        file.delete();
+                        list.remove(position);
+                        notifyDataSetChanged();
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+                return true;
             }
         });
         holder.shareImg.setOnClickListener(new View.OnClickListener() {

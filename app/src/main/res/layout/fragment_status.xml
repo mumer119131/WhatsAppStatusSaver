@@ -23,7 +23,7 @@
             android:layout_height="match_parent"
             android:theme="@style/CollapsingToolbar"
             app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
-            app:title="  Status"
+            app:title="   Status"
             app:toolbarId="@+id/toolbar">
 
 
@@ -70,7 +70,8 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
-                android:text="Refresh" />
+                android:text="Refresh"
+                app:icon="@drawable/ic_baseline_refresh_24" />
 
             <LinearLayout
                 android:id="@+id/linearLayoutClients"
